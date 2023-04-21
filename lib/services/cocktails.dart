@@ -17,6 +17,7 @@ class Cocktail {
   bool alcoholic = false;
   String instructions = "";
   String photo = "";
+  List<String> ingredients = [];
 }
 
 class CocktailService {
@@ -47,6 +48,12 @@ class CocktailService {
       result.alcoholic = cocktail['strAlcoholic'] == "Alcoholic";
       result.instructions = cocktail['strInstructions'] ?? "";
       result.photo = cocktail['strDrinkThumb'] ?? "";
+
+      for (var i = 1; i < 15; i++) {
+        if (cocktail['strIngredient$i'] != null) {
+          result.ingredients.add(cocktail['strIngredient$i']);
+        }
+      }
     }
 
     return result;

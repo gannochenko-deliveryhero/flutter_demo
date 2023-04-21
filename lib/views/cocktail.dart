@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../services/cocktails.dart';
 import '../util.dart';
 import '../widgets/drawer.dart';
+import '../widgets/header.dart';
+import '../widgets/paragraph.dart';
+import '../widgets/list_item.dart';
 import '../widgets/exponential_linear_progress_indicator.dart';
 
 class CocktailPage extends StatefulWidget {
@@ -42,6 +45,18 @@ class CocktailPageState extends State<CocktailPage> {
     }
   }
 
+  List<Widget> _renderIngredients(Cocktail cocktail) {
+    List<Widget> result = [];
+
+    if (cocktail.ingredients.isNotEmpty) {
+      for (var ingredient in cocktail.ingredients) {
+        result.add(ListItem(text: ingredient));
+      }
+    }
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     var loading = _cocktail == null;
@@ -59,17 +74,23 @@ class CocktailPageState extends State<CocktailPage> {
             const ExponentialLinearProgressIndicator(),
             loading ?
               const Center(child: Text("Loading...")) :
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child:               Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(instructions),
-                    Image.network(
-                      photo,
-                    )
-                  ],
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Header(text: "Ingredients"),
+                      ListBody(children: _renderIngredients(_cocktail!)),
+                      const Header(text: "Instructions"),
+                      Paragraph(text: instructions),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10.0),
+                        child: Image.network(photo),
+                      )
+                    ],
+                  ),
                 ),
               ),
           ],
