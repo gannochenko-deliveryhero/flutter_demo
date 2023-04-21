@@ -14,6 +14,9 @@ class Cocktail {
 
   final String id;
   final String name;
+  bool alcoholic = false;
+  String instructions = "";
+  String photo = "";
 }
 
 class CocktailService {
@@ -38,8 +41,12 @@ class CocktailService {
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonMap = jsonDecode(response.body);
       var cocktails = jsonMap['drinks'];
+      var cocktail = cocktails[0];
 
-      result = Cocktail(name: cocktails[0]['strDrink'], id: id);
+      result = Cocktail(name: cocktail['strDrink'], id: id);
+      result.alcoholic = cocktail['strAlcoholic'] == "Alcoholic";
+      result.instructions = cocktail['strInstructions'] ?? "";
+      result.photo = cocktail['strDrinkThumb'] ?? "";
     }
 
     return result;

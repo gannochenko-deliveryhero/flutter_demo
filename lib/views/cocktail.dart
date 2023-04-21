@@ -46,6 +46,8 @@ class CocktailPageState extends State<CocktailPage> {
   Widget build(BuildContext context) {
     var loading = _cocktail == null;
     var name = _cocktail == null ? "" : _cocktail!.name;
+    var photo = _cocktail == null ? "" : _cocktail!.photo;
+    var instructions = _cocktail == null ? "" : _cocktail!.instructions;
 
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +59,19 @@ class CocktailPageState extends State<CocktailPage> {
             const ExponentialLinearProgressIndicator(),
             loading ?
               const Center(child: Text("Loading...")) :
-              const Text("Loaded"),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child:               Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(instructions),
+                    Image.network(
+                      photo,
+                    )
+                  ],
+                ),
+              ),
           ],
       ),
     );
